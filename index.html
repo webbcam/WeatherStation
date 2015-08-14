@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html ng-app="Weather">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,7 +12,7 @@
     <!-- Weather Icons -->
     <link rel="stylesheet" type="text/css" href="assets/css/weather-icons.min.css">
 </head>
-<body>
+<body ng-controller="weather">
     <div class="container-fluid">
 
         <!-- Jumbotron Header -->
@@ -28,10 +28,10 @@
                         <form class="form-inline">
                             <div class="form-group">
                                 <div class="input-group input-group-lg">
-                                    <input type="text" class="form-control text-center" placeholder="zip...">
+                                    <input type="text" class="form-control text-center" ng-model="zip" placeholder="zip...">
                                 </div>
                             </div>
-                                <button type="submit" class="btn btn-info btn-lg active hidden-sm hidden-xs">Get!</button>
+                                <button type="submit" class="btn btn-info btn-lg active" ng-click="getWeather()">Get!</button>
                         </form>
                     </div>
                 </div>
@@ -39,8 +39,11 @@
 
         </div>
 
-        <div class="row">
-
+        <!-- Weather Data -->
+        <div class="row" >
+            <div class="col-xs-12 col-xs-offset-0">
+                <h1>{{data.name}}  <i class="wi {{currentIcon}}"></i></h1>
+            </div>
 
 
         </div>
