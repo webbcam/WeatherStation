@@ -40,11 +40,16 @@
         </div>
 
         <!-- Weather Data -->
-        <div class="row" >
-            <div class="col-xs-12 col-xs-offset-0">
-                <h1>{{data.name}}  <i class="wi {{currentIcon}}"></i></h1>
+        <div class="row" ng-show="checkZip()">
+            <div class="col-xs-12 col-xs-offset-1">
+                <h1>{{city}} <span style="font-size:12px">{{description}}</span> </h1>
+                <h3><i class="wi {{currentIcon}}"></i> {{currentTemp}}</h3>
+                <h5>{{humidity}}<br>
+                    {{min}} {{max}}<br>
+                    {{wind}} <br>
+                    {{cloudiness}}
+                </h5>
             </div>
-
 
         </div>
 

@@ -3,13 +3,26 @@ angular.module('Weather', [])
 .controller('weather', function($scope, $http) {
 
     $scope.zip = "";
-    
+    $scope.units = "imperial"   // change this to "metric" for metric units
+
 
     $scope.getWeather = function() {
 
-        $http.get("http://api.openweathermap.org/data/2.5/weather?zip="+$scope.zip+",us&units=imperial")
+        // clear any previous data
+        $scope.checkZip();
+
+        $http.get("http://api.openweathermap.org/data/2.5/weather?zip="+$scope.zip+",us&units="+$scope.units)
         .success(function(res) {
-            $scope.data = res;
+            $scope.code = res.cod;
+            $scope.city = res.name; // name of city
+            $scope.description = res.weather[0].description;    // description of weather
+            $scope.currentTemp = res.main.temp + "°";   //  current Temperature
+            $scope.humidity = "humidity: " + res.main.humidity + "%";
+            $scope.min = "min: " + res.main.temp_min + "°";
+            $scope.max = "max: " + res.main.temp_max + "°";
+            $scope.wind = "wind: " + res.wind.speed + " mph";
+            $scope.cloudiness = "cloudiness: " + res.clouds.all + "%";
+
             var icon = $scope.data.weather[0].icon;
 
             //  match up the icon id with the icon
@@ -21,9 +34,31 @@ angular.module('Weather', [])
             }
         });
     }
-    // $scope.getWeather();
 
+    //  checks if there is a valid zipcode
+    $scope.checkZip = function() {
+        //  check if it is a valid zipcode (4 or 5 digits and a valid city)
+        if ($scope.zip.length < 4 || $scope.zip.length > 5 ||$scope.code === "404") {
+            reset();    // clear all previous data
+            return false;
+        } else {
+            return true;
+        }
+    }
 
+    //  clears the data fields
+    var reset = function() {
+        $scope.city = "";
+        $scope.description = "";
+        $scope.currentTemp = "";
+        $scope.humidity = "";
+        $scope.min = "";
+        $scope.max = "";
+        $scope.wind = "";
+        $scope.cloudiness = "";
+        $scope.currentIcon = "";
+
+    }
 
     var icons = [
         {"id": "01d","name": "wi-day-sunny"},
