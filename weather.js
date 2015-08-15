@@ -38,6 +38,9 @@ angular.module('Weather', [])
                     }
                 }
 
+            } else {    // zip does not exist!
+                reset();    // clear data
+                $scope.weather.city = "City Not Found";
             }
 
         });
@@ -49,10 +52,6 @@ angular.module('Weather', [])
         if ($scope.zip.length === 0) {
             reset();    // clear all previous data
             return false;
-        } else if ($scope.code === "404") {
-            reset();
-            $scope.weather.city = "City Not Found";
-            return true;
         } else {
             return true;
         }
