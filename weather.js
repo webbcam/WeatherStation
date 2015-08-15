@@ -3,44 +3,56 @@ angular.module('Weather', [])
 .controller('weather', function($scope, $http) {
 
     $scope.zip = "";
-    $scope.units = "imperial"   // change this to "metric" for metric units
+    $scope.placeholder = "zip...";
+    $scope.units = "imperial";   // change this to "metric" for metric units
 
 
     $scope.getWeather = function() {
 
-        // clear any previous data
-        $scope.checkZip();
-
         $http.get("http://api.openweathermap.org/data/2.5/weather?zip="+$scope.zip+",us&units="+$scope.units)
         .success(function(res) {
+
+            //  stores the http success/fail code from response
             $scope.code = res.cod;
-            $scope.city = res.name; // name of city
-            $scope.description = res.weather[0].description;    // description of weather
-            $scope.currentTemp = res.main.temp + "°";   //  current Temperature
-            $scope.humidity = "humidity: " + res.main.humidity + "%";
-            $scope.min = "min: " + res.main.temp_min + "°";
-            $scope.max = "max: " + res.main.temp_max + "°";
-            $scope.wind = "wind: " + res.wind.speed + " mph";
-            $scope.cloudiness = "cloudiness: " + res.clouds.all + "%";
+            //  check to make sure zip code was valid
+            if ($scope.code !== "404") {
 
-            var icon = $scope.data.weather[0].icon;
+                $scope.weather = {
+                    city : res.name,
+                    description : res.weather[0].description,    // description of weather
+                    currentTemp : res.main.temp + "°",
+                    humidity : "humidity: " + res.main.humidity + "%",
+                    min : "min: " + res.main.temp_min + "°",
+                    max : "max: " + res.main.temp_max + "°",
+                    wind : "wind: " + res.wind.speed + " mph",
+                    cloudiness : "cloudiness: " + res.clouds.all + "%"
+                };
 
-            //  match up the icon id with the icon
-            for (var i=0; i < icons.length; i++) {
-                if (icons[i].id == icon) {
-                    $scope.currentIcon = icons[i].name;
-                    break;
+                var icon = res.weather[0].icon;
+
+                //  match up the icon id with the icon
+                for (var i=0; i < icons.length; i++) {
+                    if (icons[i].id === icon) {
+                        $scope.currentIcon = icons[i].name;
+                        break;
+                    }
                 }
+
             }
+
         });
     }
 
-    //  checks if there is a valid zipcode
-    $scope.checkZip = function() {
-        //  check if it is a valid zipcode (4 or 5 digits and a valid city)
-        if ($scope.zip.length < 4 || $scope.zip.length > 5 ||$scope.code === "404") {
+    //  checks if the data should be shown
+    $scope.shouldShow = function() {
+        //  check if it is a valid zipcode
+        if ($scope.zip.length === 0) {
             reset();    // clear all previous data
             return false;
+        } else if ($scope.code === "404") {
+            reset();
+            $scope.weather.city = "City Not Found";
+            return true;
         } else {
             return true;
         }
@@ -48,23 +60,16 @@ angular.module('Weather', [])
 
     //  clears the data fields
     var reset = function() {
-        $scope.city = "";
-        $scope.description = "";
-        $scope.currentTemp = "";
-        $scope.humidity = "";
-        $scope.min = "";
-        $scope.max = "";
-        $scope.wind = "";
-        $scope.cloudiness = "";
+        $scope.weather = {};
         $scope.currentIcon = "";
-
     }
 
     var icons = [
         {"id": "01d","name": "wi-day-sunny"},
         {"id": "01n","name": "wi-night-clear"},
-        {"id": "02d","name": "wi-day-cloudy"},
-        {"id": "02n","name": "wi-night-alt-cloudy"},
+        // {"id": "01n","name": "wi-stars"},    //  alternate version
+        {"id": "02d","name": "wi-day-sunny"},
+        {"id": "02n","name": "wi-night-clear"},
         {"id": "03d","name": "wi-day-sunny-overcast"},
         {"id": "03n","name": "wi-night-partly-cloudy"},
         {"id": "04d","name": "wi-day-cloudy"},

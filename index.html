@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="node_modules/normalize.css">
     <!-- Weather Icons -->
     <link rel="stylesheet" type="text/css" href="assets/css/weather-icons.min.css">
+
 </head>
 <body ng-controller="weather">
     <div class="container-fluid">
@@ -25,13 +26,14 @@
 
                 <div class="row">
                     <div class="col-xs-4 col-xs-offset-4">
-                        <form class="form-inline">
+                        <form class="form-inline" ng-submit="getWeather()">
                             <div class="form-group">
                                 <div class="input-group input-group-lg">
-                                    <input type="text" class="form-control text-center" ng-model="zip" placeholder="zip...">
+                                    <input type="text" class="form-control text-center" ng-model="zip" placeholder="{{placeholder}}" autofocus>
                                 </div>
                             </div>
-                                <button type="submit" class="btn btn-info btn-lg active" ng-click="getWeather()">Get!</button>
+                                <!-- Can't make up my mind about using this button or not -->
+                                <!-- <button type="submit" class="btn btn-info btn-lg active" ng-click="getWeather()">Get!</button> -->
                         </form>
                     </div>
                 </div>
@@ -40,14 +42,14 @@
         </div>
 
         <!-- Weather Data -->
-        <div class="row" ng-show="checkZip()">
+        <div class="row" ng-show="shouldShow()">
             <div class="col-xs-12 col-xs-offset-1">
-                <h1>{{city}} <span style="font-size:12px">{{description}}</span> </h1>
-                <h3><i class="wi {{currentIcon}}"></i> {{currentTemp}}</h3>
-                <h5>{{humidity}}<br>
-                    {{min}} {{max}}<br>
-                    {{wind}} <br>
-                    {{cloudiness}}
+                <h1>{{weather.city}} <span style="font-size:12px">{{weather.description}}</span> </h1>
+                <h3><i class="wi {{currentIcon}}"></i> {{weather.currentTemp}}</h3>
+                <h5>{{weather.humidity}}<br>
+                    {{weather.min}} {{weather.max}}<br>
+                    {{weather.wind}} <br>
+                    {{weather.cloudiness}}
                 </h5>
             </div>
 
@@ -61,7 +63,7 @@
     </div>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
 <script src="weather.js"></script>
 </body>
