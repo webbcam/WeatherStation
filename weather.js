@@ -5,6 +5,7 @@ angular.module('Weather', [])
     $scope.zip = "";
     $scope.placeholder = "zip...";
     $scope.units = "imperial";   // change this to "metric" for metric units
+    $scope.isFahr = true;
 
 
     $scope.getWeather = function() {
@@ -43,6 +44,9 @@ angular.module('Weather', [])
                 $scope.weather.city = "City Not Found";
             }
 
+            $scope.placeholder = $scope.zip;    // change placeholder to zip
+            $scope.zip = "";    // clear input field
+
         });
     }
 
@@ -61,6 +65,42 @@ angular.module('Weather', [])
     var reset = function() {
         $scope.weather = {};
         $scope.currentIcon = "";
+    }
+
+    $scope.setF = function() {
+        if ($scope.isFahr === false) {  // checks to make sure setting actually needs to be changed
+            $scope.units = "imperial";
+            $scope.isFahr = true;
+            if ($scope.placeholder !== "zip...") {
+                $scope.zip = $scope.placeholder;
+                $scope.getWeather();
+            }
+        }
+    }
+
+    $scope.setC = function() {
+        if ($scope.isFahr === true) {  // checks to make sure setting actually needs to be changed
+            $scope.units = "metric";
+            $scope.isFahr = false;
+            if ($scope.placeholder !== "zip...") {
+                $scope.zip = $scope.placeholder;
+                $scope.getWeather();
+            }
+        }
+    }
+    // Use once single toggle button is figured out
+    $scope.toggleUnits = function() {
+        if ($scope.isFahr === false) {
+            $scope.isFahr = true;
+            $scope.units = "imperial";
+        } else {
+            $scope.isFahr = false;
+            $scope.units = "metric";
+        }
+        if ($scope.placeholder !== "zip...") {
+            $scope.zip = $scope.placeholder;
+            $scope.getWeather();
+        }
     }
 
     var icons = [
