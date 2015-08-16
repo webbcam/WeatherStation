@@ -1,4 +1,4 @@
 /*  This takes off the focus border line from the buttons   */
 .btn:focus {
-  outline: none;
+    outline: none;
 }
