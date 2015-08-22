@@ -1,8 +1,6 @@
 angular.module('Weather', []) 
 
 .controller('weather', function($scope, $http) {
-    //  this comment should only be in the forecast branch
-    //  or at least this one should!
 
     $scope.zip = "";
     $scope.placeholder = "zip...";
