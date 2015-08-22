@@ -1,11 +1,14 @@
 angular.module('Weather', []) 
 
 .controller('weather', function($scope, $http) {
+    //  this comment should only be in the forecast branch
+    //  or at least this one should!
 
     $scope.zip = "";
     $scope.placeholder = "zip...";
     $scope.units = "imperial";   // change this to "metric" for metric units
     $scope.isFahr = true;
+    $scope.speedUnits = " mph";
 
 
     $scope.getWeather = function() {
@@ -25,9 +28,13 @@ angular.module('Weather', [])
                     humidity : "humidity: " + res.main.humidity + "%",
                     min : "min: " + res.main.temp_min + "°",
                     max : "max: " + res.main.temp_max + "°",
-                    wind : "wind: " + res.wind.speed + " mph",
+                    wind : "wind: " + res.wind.speed + $scope.speedUnits,
                     cloudiness : "cloudiness: " + res.clouds.all + "%"
                 };
+
+                var timeStamp = res.dt;
+                var date = new Date(timeStamp * 1000);
+                $scope.time = date.getFullYear();
 
                 var icon = res.weather[0].icon;
 
@@ -73,6 +80,7 @@ angular.module('Weather', [])
             $scope.isFahr = true;
             if ($scope.placeholder !== "zip...") {
                 $scope.zip = $scope.placeholder;
+                $scope.speedUnits = " mph";
                 $scope.getWeather();
             }
         }
@@ -84,6 +92,7 @@ angular.module('Weather', [])
             $scope.isFahr = false;
             if ($scope.placeholder !== "zip...") {
                 $scope.zip = $scope.placeholder;
+                $scope.speedUnits = " m/s";
                 $scope.getWeather();
             }
         }
@@ -93,9 +102,11 @@ angular.module('Weather', [])
         if ($scope.isFahr === false) {
             $scope.isFahr = true;
             $scope.units = "imperial";
+            $scope.speedUnits = " mph";
         } else {
             $scope.isFahr = false;
             $scope.units = "metric";
+            $scope.speedUnits = " m/s";
         }
         if ($scope.placeholder !== "zip...") {
             $scope.zip = $scope.placeholder;
