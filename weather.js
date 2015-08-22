@@ -12,7 +12,7 @@ angular.module('Weather', [])
 
     $scope.getWeather = function() {
 
-        $http.get("http://api.openweathermap.org/data/2.5/weather?zip="+$scope.zip+",us&units="+$scope.units)
+        $http.get("http://api.openweathermap.org/data/2.5/forecast/daily?zip="+$scope.zip+",us&units="+$scope.units+"&cnt=3")
         .success(function(res) {
 
             //  stores the http success/fail code from response
@@ -21,27 +21,26 @@ angular.module('Weather', [])
             if ($scope.code !== "404") {
 
                 $scope.weather = {
-                    city : res.name,
-                    description : res.weather[0].description,    // description of weather
-                    currentTemp : res.main.temp + "°",
-                    humidity : "humidity: " + res.main.humidity + "%",
-                    min : "min: " + res.main.temp_min + "°",
-                    max : "max: " + res.main.temp_max + "°",
-                    wind : "wind: " + res.wind.speed + $scope.speedUnits,
-                    cloudiness : "cloudiness: " + res.clouds.all + "%"
+                    city : res.city.name + ", " + res.city.country,
+                    description : res.list[0].weather[0].description,    // description of weather
+                    morningTemp : res.list[0].temp.morn,
+                    dayTemp : res.list[0].temp.day,
+                    nightTemp : res.list[0].temp.night
+
                 };
 
-                var timeStamp = res.dt;
+                var timeStamp = res.list[0].dt;
                 var date = new Date(timeStamp * 1000);
-                $scope.time = date.getFullYear();
-
-                var icon = res.weather[0].icon;
+                $scope.time = date.toDateString();
+                $scope.icon = [];
 
                 //  match up the icon id with the icon
-                for (var i=0; i < icons.length; i++) {
-                    if (icons[i].id === icon) {
-                        $scope.currentIcon = icons[i].name;
-                        break;
+                for (var j=0; j < res.cnt; j++) {
+                    for (var i=0; i < icons.length; i++) {
+                        if (icons[i].id === res.list[j].weather[0].icon) {
+                            $scope.icon[j] = icons[i].name;
+                            break;
+                        }
                     }
                 }
 

@@ -1,3 +1,7 @@
+/*  Prevent scrolling   */
+body {
+    overflow: hidden;
+}
 /*  This takes off the focus border line from the buttons   */
 .btn:focus {
     outline: none;
