@@ -9,6 +9,8 @@ angular.module('Weather', [])
     $scope.isFahr = true;
     $scope.speedUnits = " mph";
 
+    $scope.show = false;
+
 
     $scope.getWeather = function() {
 
@@ -42,7 +44,8 @@ angular.module('Weather', [])
 
                 var nextDay = {
                     description : res.list[2].weather[0].description,
-                    date : (new Date(res.list[2].dt * 1000)).toDateString(),
+                    date : (new Date(res.list[2].dt * 1000)),
+                    day : days[(new Date(res.list[2].dt * 1000)).getDay()],
                     morningTemp : res.list[2].temp.morn,
                     dayTemp : res.list[2].temp.day,
                     eveTemp : res.list[2].temp.eve,
@@ -63,12 +66,17 @@ angular.module('Weather', [])
                 var date = new Date(timeStamp * 1000);
                 $scope.time = date.toDateString();
 
+                $scope.show = true;
+
             } else {    // zip does not exist!
                 reset();    // clear data
                 if ($scope.zip === "") {
                     $scope.zip = "zip...";
+                    $scope.show = false;
                 } else {
+                    $scope.show = false;
                     $scope.weather.city = "City Not Found";
+
                 }
             }
 
@@ -168,6 +176,8 @@ angular.module('Weather', [])
         {"id": "50d","name": "wi-day-sprinkle"},
         {"id": "50n","name": "wi-night-alt-sprinkle"}
     ];
+
+    var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
 
 
