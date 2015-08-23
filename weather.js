@@ -12,7 +12,7 @@ angular.module('Weather', [])
 
     $scope.getWeather = function() {
 
-        $http.get("http://api.openweathermap.org/data/2.5/forecast/daily?zip="+$scope.zip+",us&units="+$scope.units+"&cnt=3")
+        $http.get("http://api.openweathermap.org/data/2.5/forecast/daily?zip="+$scope.zip+",us&units="+$scope.units+"&cnt=4")
         .success(function(res) {
 
             //  stores the http success/fail code from response
@@ -22,6 +22,7 @@ angular.module('Weather', [])
 
                 var now = {
                     description : res.list[0].weather[0].description,
+                    date : (new Date(res.list[0].dt * 1000)).toDateString(),
                     morningTemp : res.list[0].temp.morn,
                     dayTemp : res.list[0].temp.day,
                     eveTemp : res.list[0].temp.eve,
@@ -31,6 +32,7 @@ angular.module('Weather', [])
 
                 var tomorrow = {
                     description : res.list[1].weather[0].description,
+                    date : (new Date(res.list[1].dt * 1000)).toDateString(),
                     morningTemp : res.list[1].temp.morn,
                     dayTemp : res.list[1].temp.day,
                     eveTemp : res.list[1].temp.eve,
@@ -38,10 +40,21 @@ angular.module('Weather', [])
                     icon : getIcon(res.list[1].weather[0].icon)
                 };
 
+                var nextDay = {
+                    description : res.list[2].weather[0].description,
+                    date : (new Date(res.list[2].dt * 1000)).toDateString(),
+                    morningTemp : res.list[2].temp.morn,
+                    dayTemp : res.list[2].temp.day,
+                    eveTemp : res.list[2].temp.eve,
+                    nightTemp : res.list[2].temp.night,
+                    icon : getIcon(res.list[2].weather[0].icon)
+                };
+
                 $scope.weather = {
                     city : res.city.name + ", " + res.city.country,
                     now : now,
-                    tom : tomorrow
+                    tom : tomorrow,
+                    next : nextDay
 
                 };
 
