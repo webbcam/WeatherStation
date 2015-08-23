@@ -20,33 +20,43 @@ angular.module('Weather', [])
             //  check to make sure zip code was valid
             if ($scope.code !== "404") {
 
-                $scope.weather = {
-                    city : res.city.name + ", " + res.city.country,
-                    description : res.list[0].weather[0].description,    // description of weather
+                var now = {
+                    description : res.list[0].weather[0].description,
                     morningTemp : res.list[0].temp.morn,
                     dayTemp : res.list[0].temp.day,
-                    nightTemp : res.list[0].temp.night
+                    eveTemp : res.list[0].temp.eve,
+                    nightTemp : res.list[0].temp.night,
+                    icon : getIcon(res.list[0].weather[0].icon)
+                };
+
+                var tomorrow = {
+                    description : res.list[1].weather[0].description,
+                    morningTemp : res.list[1].temp.morn,
+                    dayTemp : res.list[1].temp.day,
+                    eveTemp : res.list[1].temp.eve,
+                    nightTemp : res.list[1].temp.night,
+                    icon : getIcon(res.list[1].weather[0].icon)
+                };
+
+                $scope.weather = {
+                    city : res.city.name + ", " + res.city.country,
+                    now : now,
+                    tom : tomorrow
 
                 };
+
 
                 var timeStamp = res.list[0].dt;
                 var date = new Date(timeStamp * 1000);
                 $scope.time = date.toDateString();
-                $scope.icon = [];
-
-                //  match up the icon id with the icon
-                for (var j=0; j < res.cnt; j++) {
-                    for (var i=0; i < icons.length; i++) {
-                        if (icons[i].id === res.list[j].weather[0].icon) {
-                            $scope.icon[j] = icons[i].name;
-                            break;
-                        }
-                    }
-                }
 
             } else {    // zip does not exist!
                 reset();    // clear data
-                $scope.weather.city = "City Not Found";
+                if ($scope.zip === "") {
+                    $scope.zip = "zip...";
+                } else {
+                    $scope.weather.city = "City Not Found";
+                }
             }
 
             $scope.placeholder = $scope.zip;    // change placeholder to zip
@@ -64,6 +74,18 @@ angular.module('Weather', [])
         } else {
             return true;
         }
+    }
+
+    //  returns the icon name of the specified weather icon
+    var getIcon = function(iconName) {
+        var icon_name = "";
+        for (var i=0; i < icons.length; i++) {
+            if (icons[i].id === iconName) {
+                icon_name = icons[i].name;
+                break;
+            }
+        }
+        return icon_name;
     }
 
     //  clears the data fields
