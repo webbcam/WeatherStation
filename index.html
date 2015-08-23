@@ -57,21 +57,28 @@
         <!-- Weather Data -->
         <div class="row">
             <div class="col-xs-12 col-xs-offset-1">
-                <h1>{{weather.city}} <span style="font-size:12px">{{weather.description}}</span> </h1>
+                <h1>{{weather.city}} <span style="font-size:12px">{{weather.now.description}}</span> </h1>
             </div>
         </div>
         <div class="row" ng-show="show">
             <!-- Current Data -->
             <div class="col-xs-3 col-xs-offset-1">
-                <h3>Today: <i class="wi {{weather.now.icon}}"></i><br>
-                Tomorrow: <i class="wi {{weather.tom.icon}}"></i><br>
-                {{weather.next.day}}: <i class="wi {{weather.next.icon}}"></i>
+                <h3>Today: <i class="wi {{weather.now.icon}}"></i> <h6> {{weather.now.description}}</h6><br>
+                Tomorrow: <i class="wi {{weather.tom.icon}}"></i> <h6> {{weather.tom.description}}</h6><br>
+                {{weather.next.day}}: <i class="wi {{weather.next.icon}}"></i> <h6> {{weather.next.description}} </h6>
                 </h3>
-                <h5>
-                </h5>
+            </div>
+            <div class="col-xs-4">
+                <br>
+                <h5> Morn: {{weather.now.morningTemp}}° Day: {{weather.now.dayTemp}}° <br>Evening: {{weather.now.eveTemp}}° Night: {{weather.now.nightTemp}}°</h5>
+                <br><br>
+                <h6> Morn: {{weather.tom.morningTemp}}° Day: {{weather.tom.dayTemp}}° <br>Evening: {{weather.tom.eveTemp}}° Night: {{weather.tom.nightTemp}}°</h6>
+                <br><br>
+                <h6> Morn: {{weather.next.morningTemp}}° Day: {{weather.next.dayTemp}}° <br>Evening: {{weather.next.eveTemp}}° Night: {{weather.next.nightTemp}}°</h6>
+
             </div>
             <!-- Forecast Data -->
-            <div class="col-xs-3">
+            <div class="col-xs-4">
                 <h3><h4></h4></h3>
             </div>
 

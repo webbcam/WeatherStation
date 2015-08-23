@@ -86,17 +86,6 @@ angular.module('Weather', [])
         });
     }
 
-    //  checks if the data should be shown
-    $scope.shouldShow = function() {
-        //  check if it is a valid zipcode
-        if ($scope.zip.length === 0) {
-            reset();    // clear all previous data
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     //  returns the icon name of the specified weather icon
     var getIcon = function(iconName) {
         var icon_name = "";
