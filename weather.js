@@ -8,6 +8,8 @@ angular.module('Weather', [])
     $scope.isFahr = true;
     $scope.speedUnits = " mph";
 
+    $scope.show = false;
+
 
     $scope.getWeather = function() {
 
@@ -44,9 +46,18 @@ angular.module('Weather', [])
                     }
                 }
 
+                $scope.show = true;
+
             } else {    // zip does not exist!
                 reset();    // clear data
-                $scope.weather.city = "City Not Found";
+                if ($scope.zip === "") {
+                    $scope.zip = "zip...";
+                    $scope.show = false;
+                } else {
+                    $scope.show = false;
+                    $scope.weather.city = "City Not Found";
+
+                }
             }
 
             $scope.placeholder = $scope.zip;    // change placeholder to zip

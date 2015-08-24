@@ -61,7 +61,7 @@
                 <h1>{{weather.city}} <span style="font-size:12px">{{weather.description}}</span> </h1>
             </div>
         </div>
-        <div class="row">
+        <div class="row" ng-show="show">
             <!-- Current Data -->
             <div class="col-xs-3 col-xs-offset-1">
                 <h3><i class="wi {{currentIcon}}"></i> {{weather.currentTemp}}</h3>
